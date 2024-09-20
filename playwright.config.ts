@@ -13,6 +13,13 @@ export default defineConfig<TestOptions>({
   //testDir: './tests',
   retries: 1,
   reporter: [
+    [
+      "@argos-ci/playwright/reporter",
+      {
+        // Upload to Argos on CI only.
+        uploadToArgos: !!process.env.CI,
+      },
+    ],
     ['json', {outputFile: 'test-results/jsonReport.json'}],
     ['junit', {outputFile: 'test-results/junitReport.json'}],
     ['html']
@@ -26,6 +33,7 @@ export default defineConfig<TestOptions>({
 
     trace: 'on-first-retry',
     actionTimeout: 20000,
+    screenshot: "only-on-failure",
     navigationTimeout: 25000,
     video:{
       mode: 'off',
